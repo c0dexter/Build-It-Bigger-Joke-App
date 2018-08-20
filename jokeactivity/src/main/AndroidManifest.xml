@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="michaldobrowolski.pl.jokeactivity"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <application>
+        <activity android:name=".JokeActivity"/>
+
+    </application>
+</manifest>
