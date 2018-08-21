@@ -6,6 +6,8 @@ import com.google.api.server.spi.config.ApiNamespace;
 
 import javax.inject.Named;
 
+import michaldobrowolski.pl.javajokes.JokeProvider;
+
 /** An endpoint class we are exposing */
 @Api(
         name = "myApi",
@@ -24,6 +26,13 @@ public class MyEndpoint {
         MyBean response = new MyBean();
         response.setData("Hi, " + name);
 
+        return response;
+    }
+
+    @ApiMethod(name = "provideJoke")
+    public MyBean provideJoke() {
+        MyBean response = new MyBean();
+        response.setData(JokeProvider.getRandomJoke());
         return response;
     }
 
