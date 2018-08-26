@@ -49,7 +49,6 @@ public class EndpointsAsyncTaskTest extends InstrumentationTestCase {
                 assertNotNull(o);
                 downLatch.countDown();
                 onView(withId(R.id.joke_text_view)).check(matches(Matchers.not(withText(""))));
-
             }
         };
         downLatch.await(30, TimeUnit.SECONDS);

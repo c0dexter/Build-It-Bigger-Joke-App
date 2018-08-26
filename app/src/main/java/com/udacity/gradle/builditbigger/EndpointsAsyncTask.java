@@ -15,7 +15,7 @@ import java.io.IOException;
 
 import michaldobrowolski.pl.jokeactivity.JokeActivity;
 
-class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
 
@@ -39,7 +39,6 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
                         }
                     });
             // end options for devappserver
-
             myApiService = builder.build();
         }
 
