@@ -38,7 +38,7 @@ public class EndpointsAsyncTaskTest extends InstrumentationTestCase {
     }
 
     public void testAsyncTask() throws Throwable {
-        final AsyncTask asyncTask = new AsyncTask() {
+        new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
                 return onView(withId(R.id.instructions_text_view)).perform(click());
@@ -51,6 +51,6 @@ public class EndpointsAsyncTaskTest extends InstrumentationTestCase {
                 onView(withId(R.id.joke_text_view)).check(matches(Matchers.not(withText(""))));
             }
         };
-        downLatch.await(30, TimeUnit.SECONDS);
+        downLatch.await(40, TimeUnit.SECONDS);
     }
 }
