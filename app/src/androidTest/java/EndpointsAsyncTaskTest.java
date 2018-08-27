@@ -1,56 +1,45 @@
-import android.os.AsyncTask;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.InstrumentationTestCase;
+import android.util.Log;
 
+import com.udacity.gradle.builditbigger.EndpointsAsyncTask;
 import com.udacity.gradle.builditbigger.MainActivity;
-import com.udacity.gradle.builditbigger.R;
 
-import org.hamcrest.Matchers;
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 public class EndpointsAsyncTaskTest extends InstrumentationTestCase {
 
-    private final CountDownLatch downLatch = new CountDownLatch(1);
+    private static final String TAG = "EndpointTaskTest";
 
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void buttonTestShowJoke() {
-        try {
-            testAsyncTask();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-    }
-
-    public void testAsyncTask() throws Throwable {
-        new AsyncTask() {
+    public void checkProvidingJokeByAsyncTask() throws Throwable {
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        Context context = InstrumentationRegistry.getContext();
+        EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(context) {
             @Override
-            protected Object doInBackground(Object[] objects) {
-                return onView(withId(R.id.instructions_text_view)).perform(click());
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                assertNotNull(o);
-                downLatch.countDown();
-                onView(withId(R.id.joke_text_view)).check(matches(Matchers.not(withText(""))));
+            protected void onPostExecute(String result) {
+                assertNotNull(result);
+                Log.d("TAG", result);
+                assertTrue(result.length() > 0);
+                Assert.assertThat(result, CoreMatchers.containsString("Q: "));
+                countDownLatch.countDown();
             }
         };
-        downLatch.await(40, TimeUnit.SECONDS);
+        endpointsAsyncTask.execute();
+        countDownLatch.await();
     }
+
 }
